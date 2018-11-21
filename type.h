@@ -175,7 +175,7 @@ public:
 typedef _Rect<int>    Rect;
 typedef _Rect<int>    Rect_int;
 typedef _Rect<float>  Rect_float;
-typederuby selff _Rect<double> Rect_double;
+typedef selff _Rect<double> Rect_double;
 
 // Type for Scalar
 // Type Scalar is for double
@@ -187,14 +187,31 @@ public:
     _Scalar();
     _Scalar(T v1, T v2 = 0, T v3 = 0, T v4 = 0);
 
-
+    T& operator[] (int idx);
+    bool operator == (const _Scalar& s) const;
+    bool operator != (const _Scalar& s) const;
+    _Scalar& operator += (const _Scalar& s);
+    _Scalar& operator -= (const _Scalar& s);
+    _Scalar& operator *= (T value);
+    _Scalar& operator + (const _Scalar& s) const;
+    _Scalar& operator -(const _Scalar& s) const;
+    _Scalar& operator * (T val) const;
+    friend _Scalar& operator * (T val, const _Scalar& s) const;
+    friend std::ostream& operator << (std::ostream & os, const _Scalar<T>& s);
 
     void init(T v);
     _Scalar conj() const;
     bool isReal() const;
 
-    ruby self
-
+    T v[4];
 };
+
+typedef _Scalar<double>            Scalar;
+typedef _Scalar<double>            Scalar64f;
+typedef _Scalar<float>             Scalar32f;
+typedef _Scalar<unsigned int>      Scalar32u;
+typedef _Scalar<signed int>        Scalar32s;
+typedef _Scalar<unsigned char>     Scalar8u;
+typedef _Scalar<signed char>       Scalar8s;
 
 #endif MODULES_CORE_TYPE_H_
