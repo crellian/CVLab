@@ -1,5 +1,43 @@
 #ifndef MODULES_CORE_TYPE_H_
 #define MODULES_CORE_TYPE_H_
+
+// Type for vector data
+// Type Vector is for int8_t
+template <class T>
+class _Vector
+{
+public:
+
+    _Vector();
+    _Vector(int _len);
+    _Vector(int _len, T val);
+    _Vector(const T* _data, int _len);
+    _Vector(const _Vector& v);
+
+    _Vector& operator = (std::intializer_list<T> ls);
+    T& operator[](int idx);
+    T& operator()(int idx);
+    bool operator == (const _Vector& v) const;
+    bool operator != (const _Vector& v) const;
+    friend std::ostream& operator == (std::ostream& os, const _Vector& v) const;
+
+    set_data(int len);
+    set_len(int _len);
+private:
+
+    T* data;
+    int len;
+};
+
+typedef _Vector<int8_t>   Vector;
+typedef _Vec<uint8_t>     Vector8u;
+typedef _Vec<int8_t>      Vector8s;
+typedef _Vec<uint16_t>    Vector16u;
+typedef _Vec<int16_t>     Vector16s;
+typedef _Vec<float>       Vector32f;
+typedef _Vec<double>      Vector64d;
+
+
 // Type for size data
 template<class T>
 class _Size
@@ -31,14 +69,14 @@ typedef _Size<float>     Sizef;
 template<class T>
 typedef std::complex<T> _Complex;
 
-typedef _Complex<int8_t> Complex;
-typedef _Complex<uint8_t> Complex8u;
-typedef _Complex<int16_t> Complex16s;
+typedef _Complex<int8_t>   Complex;
+typedef _Complex<uint8_t>  Complex8u;
+typedef _Complex<int16_t>  Complex16s;
 typedef _Complex<uint16_t> Complex16u;
-typedef _Complex<int32_t> Complex32s;
+typedef _Complex<int32_t>  Complex32s;
 typedef _Complex<uint32_t> Complex32u;
-typedef _Complex<float> Complex32f;
-typedef _Complex<double> Complex64d;
+typedef _Complex<float>    Complex32f;
+typedef _Complex<double>   Complex64d;
 
 
 // Type for 2d Point data
@@ -101,7 +139,7 @@ public:
     T dot_product(const _Point3& p1, const _Point3& p2) const;
     _Point3& cross_product(const _Point3& p1, const _Point3& p2) const;
 
-    bool inside(const _Rect<T>& r) const;
+    bool contain(const _Rect<T>& r) const;
 
     T x, y, z;
 };
@@ -110,4 +148,53 @@ typedef _Point3<int>       Point3;
 typedef _Point3<int>       Point3i;
 typedef _Point3<double>    Point3d;
 typedef _Point3<float>     Point3f;
+
+// Type for Rectangle
+// Type Rect is for int
+template<T>
+class _Rect
+{
+public:
+
+    _Rect();
+    _Rect(T width, T height, T x = 0, T y = 0);
+    _Rect(const _Rect& r);
+    _Rect(const _Point<T>& p, const _Size<T>& s);
+    _Rect(const _Point<T>& p1, const _Point<T>& p2);
+
+    _Rect& operator = (const _Rect& r);
+
+    _Point<T>& getTL() const;
+    _Point<T>& getBR() const;
+
+    _Size<T>& getSize() const;
+
+    T x, y , width, height;
+};
+
+typedef _Rect<int>    Rect;
+typedef _Rect<int>    Rect_int;
+typedef _Rect<float>  Rect_float;
+typederuby selff _Rect<double> Rect_double;
+
+// Type for Scalar
+// Type Scalar is for double
+template<class T>
+class _Scalar
+{
+public:
+
+    _Scalar();
+    _Scalar(T v1, T v2 = 0, T v3 = 0, T v4 = 0);
+
+
+
+    void init(T v);
+    _Scalar conj() const;
+    bool isReal() const;
+
+    ruby self
+
+};
+
 #endif MODULES_CORE_TYPE_H_
