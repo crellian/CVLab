@@ -1,41 +1,43 @@
 #ifndef MODULES_CORE_TYPE_H_
 #define MODULES_CORE_TYPE_H_
 
+#include <initializer_list>
+#include <complex>
 // Type for vector data
 // Type Vector is for int8_t
 template <class T>
 class _Vector
 {
 public:
-
     _Vector();
     _Vector(int _len);
     _Vector(int _len, T val);
     _Vector(const T* _data, int _len);
     _Vector(const _Vector& v);
 
-    _Vector& operator = (std::intializer_list<T> ls);
+    //_Vector& operator = (std::intializer_list<T> ls);
     T& operator[](int idx);
     T& operator()(int idx);
     bool operator == (const _Vector& v) const;
     bool operator != (const _Vector& v) const;
-    friend std::ostream& operator == (std::ostream& os, const _Vector& v) const;
+    friend std::ostream& operator << (std::ostream& os, const _Vector<T>& v);
 
-    set_data(int len);
-    set_len(int _len);
+    void set_len(int _len);
+
+    ~_Vector();
+
 private:
-
-    T* data;
+    T* data;//SET?
     int len;
 };
 
-typedef _Vector<int8_t>   Vector;
-typedef _Vec<uint8_t>     Vector8u;
-typedef _Vec<int8_t>      Vector8s;
-typedef _Vec<uint16_t>    Vector16u;
-typedef _Vec<int16_t>     Vector16s;
-typedef _Vec<float>       Vector32f;
-typedef _Vec<double>      Vector64d;
+typedef _Vector<int8_t>      Vector;
+typedef _Vector<uint8_t>     Vector8u;
+typedef _Vector<int8_t>      Vector8s;
+typedef _Vector<uint16_t>    Vector16u;
+typedef _Vector<int16_t>     Vector16s;
+typedef _Vector<float>       Vector32f;
+typedef _Vector<double>      Vector64d;
 
 
 // Type for size data
@@ -45,7 +47,7 @@ class _Size
 public:
 
     _Size();
-    _Size(T width, T height);
+    _Size(T _width, T _height);
     _Size(const _Size& sz);
 
     T area() const;
@@ -67,16 +69,50 @@ typedef _Size<float>     Sizef;
 // Type for complex data
 // Type Complex is for int8_t
 template<class T>
-typedef std::complex<T> _Complex;
+using _Complex1 = std::complex<T>;
 
-typedef _Complex<int8_t>   Complex;
-typedef _Complex<uint8_t>  Complex8u;
-typedef _Complex<int16_t>  Complex16s;
-typedef _Complex<uint16_t> Complex16u;
-typedef _Complex<int32_t>  Complex32s;
-typedef _Complex<uint32_t> Complex32u;
-typedef _Complex<float>    Complex32f;
-typedef _Complex<double>   Complex64d;
+typedef _Complex1<int8_t>   Complex;
+typedef _Complex1<uint8_t>  Complex8u;
+typedef _Complex1<int16_t>  Complex16s;
+typedef _Complex1<uint16_t> Complex16u;
+typedef _Complex1<int32_t>  Complex32s;
+typedef _Complex1<uint32_t> Complex32u;
+typedef _Complex1<float>    Complex32f;
+typedef _Complex1<double>   Complex64d;
+
+
+// Type for 3d Point data
+// Type Point3 is for int
+template<class T>
+class _Point3
+{
+public:
+
+    _Point3();
+    _Point3(T _x, T _y, T _z);
+    _Point3(const _Point3& p);
+
+    _Point3& operator = (const _Point3& p);
+
+    _Point3& operator + (const _Point3& p) const;
+    bool operator == (const _Point3& p) const;
+    bool operator != (const _Point3& p) const;
+    bool operator <= (const _Point3& p) const;
+    bool operator < (const _Point3& p) const;
+    bool operator >= (const _Point3& p) const;
+    bool operator > (const _Point3& p) const;
+    //friend std::ostreram& operator << (std::stream& os, const _Point3& p) const;
+
+    T dot_product(const _Point3& p1, const _Point3& p2) const;
+    _Point3& cross_product(const _Point3& p1, const _Point3& p2) const;
+
+    T x, y, z;
+};
+
+typedef _Point3<int>       Point3;
+typedef _Point3<int>       Point3i;
+typedef _Point3<double>    Point3d;
+typedef _Point3<float>     Point3f;
 
 
 // Type for 2d Point data
@@ -99,12 +135,10 @@ public:
     bool operator < (const _Point& p) const;
     bool operator >= (const _Point& p) const;
     bool operator > (const _Point& p) const;
-    friend std::ostreram& operator << (std::stream& os, const _Point& p) const;
+    //friend std::ostreram& operator << (std::stream& os, const _Point& p) const;
 
     T dot_product(const _Point& p1, const _Point& p2) const;
-    _Point3& cross_product(const _Point& p1, const _Point& p2) const;
-
-    bool inside(const _Rect<T>& r) const;
+    _Point3<T>& cross_product(const _Point& p1, const _Point& p2) const;
 
     T x, y;
 };
@@ -114,52 +148,19 @@ typedef _Point<int>       Pointi;
 typedef _Point<double>    Pointd;
 typedef _Point<float>     Pointf;
 
-// Type for 3d Point data
-// Type Point3 is for int
-template<class T>
-class _Point3
-{
-public:
 
-    _Point3();
-    _Point3(T _x, T _y, T _z);
-    _Point3(const _Point3& p);
-
-    _Point3& operator = (const _Point3& p);
-
-    _Point3& operator + (const _Point3& p) const;
-    bool operator == (const _Point3& p) const;
-    bool operator != (const _Point3& p) const;
-    bool operator <= (const _Point3& p) const;
-    bool operator < (const _Point3& p) const;
-    bool operator >= (const _Point3& p) const;
-    bool operator > (const _Point3& p) const;
-    friend std::ostreram& operator << (std::stream& os, const _Point3& p) const;
-
-    T dot_product(const _Point3& p1, const _Point3& p2) const;
-    _Point3& cross_product(const _Point3& p1, const _Point3& p2) const;
-
-    bool contain(const _Rect<T>& r) const;
-
-    T x, y, z;
-};
-
-typedef _Point3<int>       Point3;
-typedef _Point3<int>       Point3i;
-typedef _Point3<double>    Point3d;
-typedef _Point3<float>     Point3f;
 
 // Type for Rectangle
 // Type Rect is for int
-template<T>
+template<class T>
 class _Rect
 {
 public:
 
     _Rect();
-    _Rect(T width, T height, T x = 0, T y = 0);
+    _Rect(T _width, T _height, T _x = 0, T _y = 0);
     _Rect(const _Rect& r);
-    _Rect(const _Point<T>& p, const _Size<T>& s);
+    _Rect(const _Size<T>& s, const _Point<T>& p);
     _Rect(const _Point<T>& p1, const _Point<T>& p2);
 
     _Rect& operator = (const _Rect& r);
@@ -175,7 +176,7 @@ public:
 typedef _Rect<int>    Rect;
 typedef _Rect<int>    Rect_int;
 typedef _Rect<float>  Rect_float;
-typedef selff _Rect<double> Rect_double;
+typedef _Rect<double> Rect_double;
 
 // Type for Scalar
 // Type Scalar is for double
@@ -192,14 +193,14 @@ public:
     bool operator != (const _Scalar& s) const;
     _Scalar& operator += (const _Scalar& s);
     _Scalar& operator -= (const _Scalar& s);
-    _Scalar& operator *= (T value);
+    _Scalar& operator *= (T val);
     _Scalar& operator + (const _Scalar& s) const;
     _Scalar& operator -(const _Scalar& s) const;
     _Scalar& operator * (T val) const;
-    friend _Scalar& operator * (T val, const _Scalar& s) const;
-    friend std::ostream& operator << (std::ostream & os, const _Scalar<T>& s);
+    //friend _Scalar& operator * (T val, const _Scalar& s) const;
+    //friend std::ostream& operator << (std::ostream & os, const _Scalar<T>& s);
 
-    void init(T v);
+    void init(T val);
     _Scalar conj() const;
     bool isReal() const;
 
