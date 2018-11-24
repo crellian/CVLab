@@ -3,6 +3,7 @@
 
 #include <initializer_list>
 #include <complex>
+
 // Type for vector data
 // Type Vector is for int8_t
 template <class T>
@@ -16,20 +17,23 @@ public:
     _Vector(const _Vector& v);
 
     //_Vector& operator = (std::intializer_list<T> ls);
+    _Vector& operator = (const _Vector& v);        //deep copy, to be implemented
+    T& operator[](int idx) const;                  //For const Object usage
     T& operator[](int idx);
-    T& operator()(int idx);
     bool operator == (const _Vector& v) const;
     bool operator != (const _Vector& v) const;
-    friend std::ostream& operator << (std::ostream& os, const _Vector<T>& v);
 
-    void set_len(int _len);
+    void SetLen(int _len) const;
+    int GetLen() const;
 
     ~_Vector();
 
 private:
-    T* data;//SET?
     int len;
+    T* data;
 };
+
+template<class T> std::ostream& operator << (std::ostream& os, const _Vector<T>& v);
 
 typedef _Vector<int8_t>      Vector;
 typedef _Vector<uint8_t>     Vector8u;
@@ -45,25 +49,32 @@ template<class T>
 class _Size
 {
 public:
-
     _Size();
     _Size(T _width, T _height);
     _Size(const _Size& sz);
 
-    T area() const;
-
-    _Size& operator = (const _Size& s);
     bool operator == (const _Size& s) const;
     bool operator != (const _Size& s) const;
 
+    T area() const;
+
+    void SetWidth(T val);
+    void SetHeight(T val);
+    T GetWidth() const;
+    T GetHeight() const;
+
+    ~_Size();
+
+private:
     T width, height;
 };
+
+template<class T> std::ostream& operator << (std::ostream& os, const _Size<T>& s);
 
 typedef _Size<int>       Size;
 typedef _Size<int>       Sizei;
 typedef _Size<double>    Sized;
 typedef _Size<float>     Sizef;
-
 
 
 // Type for complex data
@@ -92,22 +103,31 @@ public:
     _Point3(T _x, T _y, T _z);
     _Point3(const _Point3& p);
 
-    _Point3& operator = (const _Point3& p);
-
-    _Point3& operator + (const _Point3& p) const;
+    _Point3 operator + (const _Point3& p) const;
     bool operator == (const _Point3& p) const;
     bool operator != (const _Point3& p) const;
     bool operator <= (const _Point3& p) const;
     bool operator < (const _Point3& p) const;
     bool operator >= (const _Point3& p) const;
     bool operator > (const _Point3& p) const;
-    //friend std::ostreram& operator << (std::stream& os, const _Point3& p) const;
 
-    T dot_product(const _Point3& p1, const _Point3& p2) const;
-    _Point3& cross_product(const _Point3& p1, const _Point3& p2) const;
+    T DotPdt(const _Point3& p) const;
+    _Point3 CrossPdt(const _Point3& p) const;
 
+    void SetX(T val);
+    void SetY(T val);
+    void SetZ(T val);
+    T GetX() const;
+    T GetY() const;
+    T GetZ() const;
+
+    ~_Point3();
+
+private:
     T x, y, z;
 };
+
+template<class T> std::ostream& operator << (std::ostream& os, const _Point3<T>& p);
 
 typedef _Point3<int>       Point3;
 typedef _Point3<int>       Point3i;
@@ -126,22 +146,30 @@ public:
     _Point(T _x, T _y);
     _Point(const _Point& p);
 
-    _Point& operator = (const _Point& p);
-
-    _Point& operator + (const _Point& p) const;
+    //Overflow?
+    _Point operator + (const _Point& p) const;
     bool operator == (const _Point& p) const;
     bool operator != (const _Point& p) const;
     bool operator <= (const _Point& p) const;
     bool operator < (const _Point& p) const;
     bool operator >= (const _Point& p) const;
     bool operator > (const _Point& p) const;
-    //friend std::ostreram& operator << (std::stream& os, const _Point& p) const;
 
-    T dot_product(const _Point& p1, const _Point& p2) const;
-    _Point3<T>& cross_product(const _Point& p1, const _Point& p2) const;
+    T DotPdt(const _Point& p) const;
+    _Point3<T> CrossPdt(const _Point& p) const;
 
+    void SetX(T val);
+    void SetY(T val);
+    T GetX() const;
+    T GetY() const;
+
+    ~_Point();
+
+private:
     T x, y;
 };
+
+template<class T> std::ostream& operator << (std::ostream& os, const _Point<T>& p);
 
 typedef _Point<int>       Point;
 typedef _Point<int>       Pointi;
@@ -156,21 +184,30 @@ template<class T>
 class _Rect
 {
 public:
-
     _Rect();
     _Rect(T _width, T _height, T _x = 0, T _y = 0);
     _Rect(const _Rect& r);
     _Rect(const _Size<T>& s, const _Point<T>& p);
     _Rect(const _Point<T>& p1, const _Point<T>& p2);
 
-    _Rect& operator = (const _Rect& r);
+    _Point<T> GetTL() const;
+    _Point<T> GetBR() const;
+    _Size<T> GetSize() const;
+    bool contain(const _Point<T>& p) const;
 
-    _Point<T>& getTL() const;
-    _Point<T>& getBR() const;
+    void SetWidth(T val);
+    void SetHeight(T val);
+    T GetWidth() const;
+    T GetHeight() const;
+    void SetX(T val);
+    void SetY(T val);
+    T GetX() const;
+    T GetY() const;
 
-    _Size<T>& getSize() const;
+    ~_Rect();
 
-    T x, y , width, height;
+private:
+    T width, height, x, y;
 };
 
 typedef _Rect<int>    Rect;
@@ -187,6 +224,7 @@ public:
 
     _Scalar();
     _Scalar(T v1, T v2 = 0, T v3 = 0, T v4 = 0);
+    _Scalar(const _Scalar& s);
 
     T& operator[] (int idx);
     bool operator == (const _Scalar& s) const;
@@ -194,18 +232,25 @@ public:
     _Scalar& operator += (const _Scalar& s);
     _Scalar& operator -= (const _Scalar& s);
     _Scalar& operator *= (T val);
-    _Scalar& operator + (const _Scalar& s) const;
-    _Scalar& operator -(const _Scalar& s) const;
-    _Scalar& operator * (T val) const;
-    //friend _Scalar& operator * (T val, const _Scalar& s) const;
-    //friend std::ostream& operator << (std::ostream & os, const _Scalar<T>& s);
+    _Scalar operator + (const _Scalar& s) const;
+    _Scalar operator -(const _Scalar& s) const;
+    _Scalar operator * (T val) const;
 
     void init(T val);
     _Scalar conj() const;
     bool isReal() const;
 
+    ~_Scalar();
+
+    //SetV
+    //GetV
+
+//private:
     T v[4];
 };
+
+template<class T, class _T> _Scalar<T> operator * (_T val, const _Scalar<T>& s);
+template<class T> std::ostream& operator << (std::ostream& os, const _Scalar<T>& s);
 
 typedef _Scalar<double>            Scalar;
 typedef _Scalar<double>            Scalar64f;
@@ -215,4 +260,9 @@ typedef _Scalar<signed int>        Scalar32s;
 typedef _Scalar<unsigned char>     Scalar8u;
 typedef _Scalar<signed char>       Scalar8s;
 
-#endif MODULES_CORE_TYPE_H_
+
+// Type for Matrix
+
+
+#include "C:\Users\Lenovo\Desktop\OpencvLib-master\type.hpp"
+#endif //MODULES_CORE_TYPE_H_
