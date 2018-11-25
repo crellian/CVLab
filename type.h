@@ -16,7 +16,7 @@ public:
     _Vector(const T* _data, int _len);
     _Vector(const _Vector& v);
 
-    //_Vector& operator = (std::intializer_list<T> ls);
+    _Vector& operator = (std::initializer_list<T> ls);
     _Vector& operator = (const _Vector& v);        //deep copy, to be implemented
     T& operator[](int idx) const;                  //For const Object usage
     T& operator[](int idx);
@@ -221,7 +221,6 @@ template<class T>
 class _Scalar
 {
 public:
-
     _Scalar();
     _Scalar(T v1, T v2 = 0, T v3 = 0, T v4 = 0);
     _Scalar(const _Scalar& s);
@@ -262,6 +261,72 @@ typedef _Scalar<signed char>       Scalar8s;
 
 
 // Type for Matrix
+template<class T>
+class _Matrix
+{
+public:
+    _Matrix();
+    _Matrix(int _row, int _col);
+    _Matrix(const _Matrix& m);
+    
+    _Matrix& operator = (const Matrix& m);                 //For deep copy usage
+    _Matrix& operator = (std::initializer_list<T> ls);
+    
+    T& at(int row, int col);
+    
+    _Matrix transpose() const;
+    _Matrix CrossPdt(const _Matrix& m) const;
+    
+    //Matlab-like
+    //_Matrix inv() const;
+    static _Matrix zeros(int val);
+    static _Matrix ones(int val);
+    static _Matrix eye(int val);
+    static _Matrix zeros(int row, int col);
+	static _Matrix ones(int row, int col);
+	static _Matrix eye(int row, int col);
+	//static _Matrix zeros(const Matrix& m);
+	//static _Matrix ones(const Matrix& m);
+	//static _Matrix eye(const Matrix& m);
+	bool isempty () const;
+	//size
+    //T rank() const;
+    T trace() const;
+    
+    ~Matrix();
+    
+private:
+    int row, col;
+    T* data;
+};
+
+template<class T> _Matrix<T> conv(const _Matrix<T>& m1, const _Matrix<T>& m2);
+template<class T> std::ostream& operator << (std::ostream& os, const _Matrix<T>& m);
+
+template<class T> _Matrix<T> operator * (const Matrix<T>& m1, const Matrix<T>& m2);
+template<class T> _Matrix<T> operator * (const Matrix<T>& m1, T val);
+template<class T> _Matrix<T> operator * (T val, const Matrix<T>& m2);
+
+template<class T> _Matrix<T> operator + (const Matrix<T>& m1, const Matrix<T>& m2);
+template<class T> _Matrix<T> operator + (const Matrix<T>& m1, T val);
+template<class T> _Matrix<T> operator + (T val, const Matrix<T>& m2);
+
+template<class T> _Matrix<T> operator - (const Matrix<T>& m1, const Matrix<T>& m2);
+template<class T> _Matrix<T> operator - (const Matrix<T>& m1, T val);
+template<class T> _Matrix<T> operator - (T val, const Matrix<T>& m2);
+
+template<class T> _Matrix<T> operator == (const Matrix<T>& m1, const Matrix<T>& m2);
+template<class T> _Matrix<T> operator != (const Matrix<T>& m1, const Matrix<T>& m2);
+
+typedef _Matrix<double>             Matrix;
+typedef _Matrix<double>             Matrix64f;
+typedef _Matrix<float>              Matrix32f;
+typedef _Matrix<signed int>         Matrix32s;
+typedef _Matrix<unsigned int>       Matrix32u;
+typedef _Matrix<signed short>       Matrix16s;
+typedef _Matrix<unsigned short>     Matrix16u;
+typedef _Matrix<signed char>        Matrix8s;
+typedef _Matrix<unsigned char>      Matrix8u;
 
 
 #include "C:\Users\Lenovo\Desktop\OpencvLib-master\type.hpp"
