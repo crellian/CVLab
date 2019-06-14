@@ -4,6 +4,10 @@
 #include <initializer_list>
 #include <complex>
 
+namespace CVlab
+{
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Type for vector data
 // Type Vector is for int8_t
 template <class T>
@@ -11,18 +15,16 @@ class _Vector
 {
 public:
     _Vector();
-    _Vector(int _len);
+    explicit _Vector(int _len);
     _Vector(int _len, T val);
-    _Vector(const T* _data, int _len);
-    _Vector(const _Vector& v);
+    _Vector(int _len, const T* _data);
+
+    explicit _Vector(const _Vector<T>& v);
 
     _Vector& operator = (std::initializer_list<T> ls);
-    _Vector& operator = (const _Vector& v);        //deep copy, to be implemented
-    T& operator[](int idx) const;                  //For const Object usage
+    _Vector& operator = (const _Vector<T>& v);        //deep copy
+    const T& operator[](int idx) const;                  //For const Object
     T& operator[](int idx);
-    bool operator == (const _Vector& v) const;
-    bool operator != (const _Vector& v) const;
-
     void SetLen(int _len) const;
     int GetLen() const;
 
@@ -33,6 +35,8 @@ private:
     T* data;
 };
 
+template<class T> bool operator == (const _Vector<T>& v1, const _Vector<T>& v2);
+template<class T> bool operator != (const _Vector<T>& v1, const _Vector<T>& v2);
 template<class T> std::ostream& operator << (std::ostream& os, const _Vector<T>& v);
 
 typedef _Vector<int8_t>      Vector;
@@ -51,10 +55,7 @@ class _Size
 public:
     _Size();
     _Size(T _width, T _height);
-    _Size(const _Size& sz);
-
-    bool operator == (const _Size& s) const;
-    bool operator != (const _Size& s) const;
+    explicit _Size(const _Size<T>& sz);
 
     T area() const;
 
@@ -63,12 +64,14 @@ public:
     T GetWidth() const;
     T GetHeight() const;
 
-    ~_Size();
+    ~_Size() = default;
 
 private:
     T width, height;
 };
 
+template<class T> bool operator == (const _Size<T>& s1, const _Size<T>& s2);
+template<class T> bool operator != (const _Size<T>& s1, const _Size<T>& s2);
 template<class T> std::ostream& operator << (std::ostream& os, const _Size<T>& s);
 
 typedef _Size<int>       Size;
@@ -101,18 +104,10 @@ public:
 
     _Point3();
     _Point3(T _x, T _y, T _z);
-    _Point3(const _Point3& p);
+    explicit _Point3(const _Point3<T>& p);
 
-    _Point3 operator + (const _Point3& p) const;
-    bool operator == (const _Point3& p) const;
-    bool operator != (const _Point3& p) const;
-    bool operator <= (const _Point3& p) const;
-    bool operator < (const _Point3& p) const;
-    bool operator >= (const _Point3& p) const;
-    bool operator > (const _Point3& p) const;
-
-    T DotPdt(const _Point3& p) const;
-    _Point3 CrossPdt(const _Point3& p) const;
+    T DotPdt(const _Point3<T>& p) const;
+    _Point3 CrossPdt(const _Point3<T>& p) const;
 
     void SetX(T val);
     void SetY(T val);
@@ -121,12 +116,19 @@ public:
     T GetY() const;
     T GetZ() const;
 
-    ~_Point3();
+    ~_Point3() = default;
 
 private:
     T x, y, z;
 };
 
+template<class T> _Point3<T> operator + (const _Point3<T>& p1, const _Point3<T>& p2);
+template<class T> bool operator == (const _Point3<T>& p1, const _Point3<T>& p2);
+template<class T> bool operator != (const _Point3<T>& p1, const _Point3<T>& p2);
+template<class T> bool operator <= (const _Point3<T>& p1, const _Point3<T>& p2);
+template<class T> bool operator < (const _Point3<T>& p1, const _Point3<T>& p2);
+template<class T> bool operator >= (const _Point3<T>& p1, const _Point3<T>& p2);
+template<class T> bool operator > (const _Point3<T>& p1, const _Point3<T>& p2);
 template<class T> std::ostream& operator << (std::ostream& os, const _Point3<T>& p);
 
 typedef _Point3<int>       Point3;
@@ -144,31 +146,29 @@ public:
 
     _Point();
     _Point(T _x, T _y);
-    _Point(const _Point& p);
+    explicit _Point(const _Point<T>& p);
 
     //Overflow?
-    _Point operator + (const _Point& p) const;
-    bool operator == (const _Point& p) const;
-    bool operator != (const _Point& p) const;
-    bool operator <= (const _Point& p) const;
-    bool operator < (const _Point& p) const;
-    bool operator >= (const _Point& p) const;
-    bool operator > (const _Point& p) const;
-
-    T DotPdt(const _Point& p) const;
-    _Point3<T> CrossPdt(const _Point& p) const;
+    T DotPdt(const _Point<T>& p) const;
+    _Point3<T> CrossPdt(const _Point<T>& p) const;
 
     void SetX(T val);
     void SetY(T val);
     T GetX() const;
     T GetY() const;
 
-    ~_Point();
+    ~_Point() = default;
 
 private:
     T x, y;
 };
-
+template<class T> _Point<T> operator + (const _Point<T>& p1, const _Point<T>& p2);
+template<class T> bool operator == (const _Point<T>& p1, const _Point<T>& p2);
+template<class T> bool operator != (const _Point<T>& p1, const _Point<T>& p2);
+template<class T> bool operator <= (const _Point<T>& p1, const _Point<T>& p2);
+template<class T> bool operator < (const _Point<T>& p1, const _Point<T>& p2);
+template<class T> bool operator >= (const _Point<T>& p1, const _Point<T>& p2);
+template<class T> bool operator > (const _Point<T>& p1, const _Point<T>& p2);
 template<class T> std::ostream& operator << (std::ostream& os, const _Point<T>& p);
 
 typedef _Point<int>       Point;
@@ -186,7 +186,7 @@ class _Rect
 public:
     _Rect();
     _Rect(T _width, T _height, T _x = 0, T _y = 0);
-    _Rect(const _Rect& r);
+    explicit _Rect(const _Rect& r);
     _Rect(const _Size<T>& s, const _Point<T>& p);
     _Rect(const _Point<T>& p1, const _Point<T>& p2);
 
@@ -204,7 +204,7 @@ public:
     T GetX() const;
     T GetY() const;
 
-    ~_Rect();
+    ~_Rect() = default;
 
 private:
     T width, height, x, y;
@@ -222,32 +222,30 @@ class _Scalar
 {
 public:
     _Scalar();
-    _Scalar(T v1, T v2 = 0, T v3 = 0, T v4 = 0);
-    _Scalar(const _Scalar& s);
+    explicit _Scalar(T v1, T v2 = 0, T v3 = 0, T v4 = 0);
+    explicit _Scalar(const _Scalar<T>& s);
 
+    const T& operator[] (int idx) const;
     T& operator[] (int idx);
-    bool operator == (const _Scalar& s) const;
-    bool operator != (const _Scalar& s) const;
-    _Scalar& operator += (const _Scalar& s);
-    _Scalar& operator -= (const _Scalar& s);
-    _Scalar& operator *= (T val);
-    _Scalar operator + (const _Scalar& s) const;
-    _Scalar operator -(const _Scalar& s) const;
-    _Scalar operator * (T val) const;
 
     void init(T val);
     _Scalar conj() const;
     bool isReal() const;
 
-    ~_Scalar();
+    ~_Scalar() = default;
 
-    //SetV
-    //GetV
-
-//private:
+private:
     T v[4];
 };
 
+template<class T> bool operator == (const _Scalar<T>& s1, const _Scalar<T>& s2);
+template<class T> bool operator != (const _Scalar<T>& s1, const _Scalar<T>& s2);
+template<class T> _Scalar<T>& operator += (_Scalar<T>& s1, const _Scalar<T>& s2);
+template<class T> _Scalar<T>& operator -= (_Scalar<T>& s1, const _Scalar<T>& s2);
+template<class T, class _T> _Scalar<T>& operator *= (_Scalar<T>& s, _T val);
+template<class T> _Scalar<T> operator + (const _Scalar<T>& s1, const _Scalar<T>& s2);
+template<class T> _Scalar<T> operator - (const _Scalar<T>& s1, const _Scalar<T>& s2);
+template<class T, class _T> _Scalar<T> operator * (const _Scalar<T>& s, _T val);
 template<class T, class _T> _Scalar<T> operator * (_T val, const _Scalar<T>& s);
 template<class T> std::ostream& operator << (std::ostream& os, const _Scalar<T>& s);
 
@@ -266,57 +264,49 @@ class _Matrix
 {
 public:
     _Matrix();
-    _Matrix(int _row, int _col);
-    _Matrix(const _Matrix& m);
-    
-    _Matrix& operator = (const Matrix& m);                 //For deep copy usage
-    _Matrix& operator = (std::initializer_list<T> ls);
-    
-    T& at(int row, int col);
-    
-    _Matrix transpose() const;
-    _Matrix CrossPdt(const _Matrix& m) const;
-    
+    _Matrix(int _row, int _col, int _channel = 1);
+	explicit _Matrix(const _Size<int> s, int _channel = 1);
+    explicit _Matrix(const _Matrix& m);
+
+    _Matrix<T>& operator = (const _Matrix<T>& m);
+    _Matrix<T>& operator = (std::initializer_list<T> ls);
+    T* operator[](int n);                                       //for writing operation, copy-on-write
+    const T* operator[](int n) const {return &(data_p->data[n * col * channel]);}
+    void recreate(int _row, int _col, int _channel = 1);
+
+    _Matrix<T> transpose() const;
+    _Matrix<T> dot(const _Matrix<T>& m) const;
+
     //Matlab-like
     //_Matrix inv() const;
-    static _Matrix zeros(int val);
-    static _Matrix ones(int val);
-    static _Matrix eye(int val);
-    static _Matrix zeros(int row, int col);
-	static _Matrix ones(int row, int col);
-	static _Matrix eye(int row, int col);
-	//static _Matrix zeros(const Matrix& m);
-	//static _Matrix ones(const Matrix& m);
-	//static _Matrix eye(const Matrix& m);
+    static _Matrix<T> eye(int val);
+    static _Matrix<T> zeros(int row, int col, int channel = 1);
+	static _Matrix<T> ones(int row, int col, int channel = 1);
+	static _Matrix<T> eye(int row, int col);
 	bool isempty () const;
-	//size
     //T rank() const;
     T trace() const;
-    
-    ~Matrix();
-    
+    int GetChannel() const {return channel;}
+    int GetRow() const {return row;}
+    int GetCol() const {return col;}
+    _Size<int> GetSize() const {return {col, row};}
+
+    ~_Matrix();
+
 private:
+
+    struct Data
+    {
+        int refCount;
+        T* data;
+        Data(int _row, int _col, int _channel);
+        ~Data();
+    };
+
+    int channel;
     int row, col;
-    T* data;
+    Data* data_p;
 };
-
-template<class T> _Matrix<T> conv(const _Matrix<T>& m1, const _Matrix<T>& m2);
-template<class T> std::ostream& operator << (std::ostream& os, const _Matrix<T>& m);
-
-template<class T> _Matrix<T> operator * (const Matrix<T>& m1, const Matrix<T>& m2);
-template<class T> _Matrix<T> operator * (const Matrix<T>& m1, T val);
-template<class T> _Matrix<T> operator * (T val, const Matrix<T>& m2);
-
-template<class T> _Matrix<T> operator + (const Matrix<T>& m1, const Matrix<T>& m2);
-template<class T> _Matrix<T> operator + (const Matrix<T>& m1, T val);
-template<class T> _Matrix<T> operator + (T val, const Matrix<T>& m2);
-
-template<class T> _Matrix<T> operator - (const Matrix<T>& m1, const Matrix<T>& m2);
-template<class T> _Matrix<T> operator - (const Matrix<T>& m1, T val);
-template<class T> _Matrix<T> operator - (T val, const Matrix<T>& m2);
-
-template<class T> _Matrix<T> operator == (const Matrix<T>& m1, const Matrix<T>& m2);
-template<class T> _Matrix<T> operator != (const Matrix<T>& m1, const Matrix<T>& m2);
 
 typedef _Matrix<double>             Matrix;
 typedef _Matrix<double>             Matrix64f;
@@ -328,6 +318,25 @@ typedef _Matrix<unsigned short>     Matrix16u;
 typedef _Matrix<signed char>        Matrix8s;
 typedef _Matrix<unsigned char>      Matrix8u;
 
+template<class T> _Matrix<T> conv(const _Matrix<T>& mat, const Matrix64f& core, bool normalize=true, bool ccorr=true);
+template<class T> std::ostream& operator << (std::ostream& os, const _Matrix<T>& m);
+
+template<class T> _Matrix<T> operator * (const _Matrix<T>& m1, const _Matrix<T>& m2);
+template<class T, class _T> _Matrix<T> operator * (const _Matrix<T>& m, _T val);
+template<class T, class _T> _Matrix<T> operator * (_T val, const _Matrix<T>& m);
+
+template<class T> _Matrix<T> operator + (const _Matrix<T>& m1, const _Matrix<T>& m2);
+template<class T, class _T> _Matrix<T> operator + (const _Matrix<T>& m, _T val);
+template<class T, class _T> _Matrix<T> operator + (_T val, const _Matrix<T>& m);
+
+template<class T> _Matrix<T> operator - (const _Matrix<T>& m1, const _Matrix<T>& m2);
+template<class T, class _T> _Matrix<T> operator - (const _Matrix<T>& m, _T val);
+template<class T, class _T> _Matrix<T> operator - (_T val, const _Matrix<T>& m);
+
+template<class T> bool operator == (const _Matrix<T>& m1, const _Matrix<T>& m2);
+template<class T> bool operator != (const _Matrix<T>& m1, const _Matrix<T>& m2);
+
+} // !namespace CVLab
 
 #include "C:\Users\Lenovo\Desktop\OpencvLib-master\type.hpp"
 #endif //MODULES_CORE_TYPE_H_
