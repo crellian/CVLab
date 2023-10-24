@@ -11,3 +11,7 @@ Getting Started
 * libpng/zlib
 * fftw
 * FFmpeg
+
+Usage
+----
+Please refer to the code example.
