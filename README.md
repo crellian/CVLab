@@ -1,6 +1,8 @@
 CVlab
 ====
 
+A reimplementation of commonly used methods in OpenCV.
+
 Getting Started
 ----
 
