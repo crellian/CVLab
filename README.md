@@ -4,8 +4,8 @@ CVlab
 Getting Started
 ----
 
-###Prerequisites
-*libjpeg
-*libpng/zlib
-*fftw
-*FFmpeg
+### Prerequisites
+* libjpeg
+* libpng/zlib
+* fftw
+* FFmpeg
